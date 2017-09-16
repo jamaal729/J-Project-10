@@ -1,4 +1,4 @@
-package com.teamtreehouse.automation.control;
+package com.teamtreehouse.automation.device;
 
 import com.teamtreehouse.automation.user.User;
 import com.teamtreehouse.automation.user.UserRepository;
@@ -13,24 +13,23 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @Component
-@RepositoryEventHandler(Control.class)
-public class ControlEventHandler {
+@RepositoryEventHandler(Device.class)
+public class DeviceEventHandler {
     private final UserRepository users;
 
     @Autowired
-    public ControlEventHandler(UserRepository users) {
+    public DeviceEventHandler(UserRepository users) {
         this.users = users;
     }
 
-    // Only Room Administrators can add and modify Controls
+    // Only Room Administrators can add and modify Devices
     @HandleBeforeCreate
     @HandleBeforeSave
-    public void setLastModifiedByOnControlAddOrModify(Control control) {
+    public void authorizeDeviceAddOrModify(Device device) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = users.findByName(name);
         if (!Arrays.asList(user.getRoles()).contains("ROLE_ADMIN")) {
-            throw new AccessDeniedException("Must be a room administrator to add or modify controls");
+            throw new AccessDeniedException("Must be a room administrator to add or modify devices");
         }
-        control.setLastModifiedBy(user);
     }
 }

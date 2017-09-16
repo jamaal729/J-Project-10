@@ -20,8 +20,8 @@ public class Room extends BaseEntity {
     private String name;
 
     @NotNull
-    @Min(value = 1, message = "Minimum area is 1 (sq ft/sq.m")
-    @Max(value = 999, message = "Maximum area is 999 (sq ft/sq.m")
+    @Min(value = 1, message = "Minimum area is 1 (sq ft/sq.m)")
+    @Max(value = 999, message = "Maximum area is 999 (sq ft/sq.m)")
     private int area;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
